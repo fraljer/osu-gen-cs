@@ -1,0 +1,47 @@
+name: Build osu-gen-cs
+
+on:
+  push:
+    branches: [ "stabil" ]
+  pull_request:
+    branches: [ "stabil" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    env:
+      Solution_Name: osu-gen-cs.sln
+      Project_Path: osu-gen-cs/osu-gen-cs.csproj
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore $env:Solution_Name
+
+      - name: Build project
+        run: dotnet build $env:Project_Path --configuration $env:Configuration --no-restore
+        env:
+          Configuration: ${{ matrix.configuration }}
+
+      - name: Publish as single executable
+        run: dotnet publish $env:Project_Path -c $env:Configuration -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish
+        env:
+          Configuration: ${{ matrix.configuration }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: osu-gen-cs-${{ matrix.configuration }}
+          path: publish/
