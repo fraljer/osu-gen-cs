@@ -15,6 +15,7 @@ jobs:
         configuration: [Release]
 
     env:
+      Solution_Name: osu-gen-cs.sln
       Project_Path: osu-gen-cs/osu-gen-cs.csproj
 
     steps:
@@ -27,7 +28,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore $env:Project_Path
+        run: dotnet restore $env:Solution_Name
 
       - name: Build project
         run: dotnet build $env:Project_Path --configuration $env:Configuration --no-restore
