@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using osu.Helpers;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
@@ -80,6 +81,7 @@ namespace osu_gen_cs
 
             this.chkHD.Location = new Point(150, 100);
             this.chkHD.Text = "Export @2x (HD)";
+            this.chkHD.Checked = true;
 
             // Form
             this.ClientSize = new Size(600, 140);
@@ -197,37 +199,9 @@ namespace osu_gen_cs
                 g.DrawString(text, font, Brushes.White, 0, 0, StringFormat.GenericTypographic);
             }
 
-            return TrimBitmap(bmp);
+            return BitmapHelper.TrimBitmap(bmp);
         }
 
-        private static Bitmap TrimBitmap(Bitmap source)
-        {
-            int minX = source.Width, minY = source.Height, maxX = 0, maxY = 0;
-            bool hasAlpha = false;
 
-            for (int y = 0; y < source.Height; y++)
-            {
-                for (int x = 0; x < source.Width; x++)
-                {
-                    var c = source.GetPixel(x, y);
-                    if (c.A > 0)
-                    {
-                        hasAlpha = true;
-                        if (x < minX) minX = x;
-                        if (y < minY) minY = y;
-                        if (x > maxX) maxX = x;
-                        if (y > maxY) maxY = y;
-                    }
-                }
-            }
-
-            if (!hasAlpha)
-                return new Bitmap(1, 1);
-
-            int w = maxX - minX + 1;
-            int h = maxY - minY + 1;
-            var rect = new Rectangle(minX, minY, w, h);
-            return source.Clone(rect, PixelFormat.Format32bppArgb);
-        }
     }
 }
