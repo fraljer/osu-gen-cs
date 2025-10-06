@@ -10,12 +10,11 @@ using System.Windows.Forms;
 
 namespace osu_gen_cs
 {
-    public partial class Form1 : Form, IHasForm
+    public partial class Form1 : Form
     {
         private string fontPath = "";
         private string outputFolder = "";
 
-        public Icon Icon2 => osu.Resources.icon;
 
         private Button btnFont;
         private Button btnFolder;
@@ -27,7 +26,8 @@ namespace osu_gen_cs
 
         public Form1()
         {
-            
+            ColourHelper.SetDark(this);
+            ColourHelper.DarkenButtons(this);
             Init();
         }
 
@@ -100,7 +100,7 @@ namespace osu_gen_cs
         private void BtnFont_Click(object sender, EventArgs e)
         {
             using var ofd = new OpenFileDialog();
-            ofd.Filter = "Font Files (*.ttf;*.otf)|*.ttf;*.otf";
+            ofd.Filter = "Font Files (*.ttf;*.otf;*.fråjttf)|*.ttf;*.otf;*.fråjttf";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 fontPath = ofd.FileName;
@@ -153,7 +153,7 @@ namespace osu_gen_cs
             {
                 if (chkSD.Checked)
                 {
-                    var bmp = RenderGlyph(family, kv.Key, baseFontSize);
+                    var bmp = BitmapHelper.RenderGlyph(family, kv.Key, baseFontSize);
                     foreach (var name in kv.Value)
                     {
                         bmp.Save(Path.Combine(outputFolder, name), ImageFormat.Png);
@@ -163,7 +163,7 @@ namespace osu_gen_cs
 
                 if (chkHD.Checked)
                 {
-                    var bmp2x = RenderGlyph(family, kv.Key, baseFontSize * 2);
+                    var bmp2x = BitmapHelper.RenderGlyph(family, kv.Key, baseFontSize * 2);
                     foreach (var name in kv.Value)
                     {
                         var hdName = Path.GetFileNameWithoutExtension(name) + "@2x.png";
@@ -175,33 +175,5 @@ namespace osu_gen_cs
 
             MessageBox.Show("Export complete!");
         }
-
-        private static Bitmap RenderGlyph(FontFamily family, char c, int size)
-        {
-            string text = c.ToString();
-            using var font = new Font(family, size, FontStyle.Regular, GraphicsUnit.Pixel);
-
-            // Measure text
-            using var tmp = new Bitmap(1, 1);
-            SizeF textSize;
-            using (var g = Graphics.FromImage(tmp))
-            {
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                textSize = g.MeasureString(text, font, PointF.Empty, StringFormat.GenericTypographic);
-            }
-
-            // Render
-            var bmp = new Bitmap((int)Math.Ceiling(textSize.Width * 2), (int)Math.Ceiling(textSize.Height * 2), PixelFormat.Format32bppArgb);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.Clear(Color.Transparent);
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                g.DrawString(text, font, Brushes.White, 0, 0, StringFormat.GenericTypographic);
-            }
-
-            return BitmapHelper.TrimBitmap(bmp);
-        }
-
-
     }
 }
