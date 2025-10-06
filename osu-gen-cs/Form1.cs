@@ -4,14 +4,17 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using osu.Common;
 using System.Windows.Forms;
 
 namespace osu_gen_cs
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IHasForm
     {
         private string fontPath = "";
         private string outputFolder = "";
+
+        public Icon Icon2 => osu.Resources.icon;
 
         private Button btnFont;
         private Button btnFolder;
@@ -23,7 +26,12 @@ namespace osu_gen_cs
 
         public Form1()
         {
+            
             Init();
+        }
+
+        private void InitializeInterface()
+        {
         }
 
         private void Init()
@@ -82,6 +90,7 @@ namespace osu_gen_cs
             this.Controls.Add(this.lblFolder);
             this.Controls.Add(this.chkSD);
             this.Controls.Add(this.chkHD);
+            this.Icon = osu.Resources.favicon;
             this.Text = "osu! Font Exporter";
             this.ResumeLayout(false);
         }
