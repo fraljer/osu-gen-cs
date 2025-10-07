@@ -9,8 +9,8 @@ namespace osu.Helpers{
 	public static class ColourHelper{
 		public static void SetDark(Control parent){
 
-			parent.BackColor = Color.FromArgb(30, 30, 30);
-		    parent.ForeColor = Color.White;
+			parent.BackColor = Colour.FromArgb(21,21,21);
+		    parent.ForeColor = Colour.White;
 
 		    foreach (Control c in parent.Controls)
         	SetDark(c);
@@ -22,10 +22,10 @@ namespace osu.Helpers{
 
 				if (c is Button btn){
 
-					btn.FlatStyle = FlatStyle.Flat;
-					btn.FlatAppearance.BorderColor = Colour.Gray;
-					btn.BackColor = Colour.FromArgb(45, 45, 48);
-					btn.ForeColor = Colour.White;
+					btn.FlatStyle = FlatStyle.Standard;
+					btn.FlatAppearance.BorderColor = Colour.Red;
+					btn.BackColor = Colour.FromArgb(125, 196, 228);
+					btn.ForeColor = Colour.Red;
 				}
 				else{
 

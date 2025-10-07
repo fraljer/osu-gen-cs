@@ -26,8 +26,10 @@ namespace osu_gen_cs
 
         public Form1()
         {
+            
             ColourHelper.SetDark(this);
             ColourHelper.DarkenButtons(this);
+            
             Init();
         }
 
