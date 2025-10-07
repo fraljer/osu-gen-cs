@@ -1,6 +1,8 @@
 // If you're wondering about the syntax, I created this file in Sublime Text.
 // You will see a lot of inconsistencies across this repository
 
+// fuck, I found Dark.Net, just AFTER I made this.
+
 using Colour = System.Drawing.Color;
 
 namespace osu.Helpers{
