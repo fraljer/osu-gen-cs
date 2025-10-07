@@ -1,3 +1,5 @@
+using Dark.Net;
+
 namespace osu_gen_cs
 {
     internal static class Program
@@ -12,6 +14,7 @@ namespace osu_gen_cs
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
+
         }
     }
 }
